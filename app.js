@@ -19,7 +19,8 @@ fileStream.on('data', function(chunk) {
         'calorieCount': 0
       });
     }
-    else {
+    
+    if(val !== '') {
       let current_elf = elfData[elfData.length -1];
       // console.log("current", current_elf, parseInt(val));
       elfData[elfData.length -1].calorieCount = current_elf.calorieCount + parseInt(val);
