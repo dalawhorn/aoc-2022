@@ -40,6 +40,13 @@ fileStream.on('data', function(chunk) {
   });
 
   console.log("Elf carrying the most calories: ", elfData[elfData.length - 1]);
+
+  let topThreeTotalCalories = 0;
+  for(let i = 1; i <= 3; i++) {
+    topThreeTotalCalories = topThreeTotalCalories + elfData[elfData.length - i].calorieCount;
+  }
+
+  console.log('Top 3 Calorie Count: ', topThreeTotalCalories);
 });
 
 fileStream.on('error', function(error) {
