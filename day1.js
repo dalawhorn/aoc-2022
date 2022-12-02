@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const inputFile = "./input.txt";
+const inputFile = "./day1input.txt";
 let elfData = [];
 let fileStream = fs.createReadStream(inputFile);
 
