@@ -5,17 +5,33 @@ const fs = require('fs');
 const inputFile = "./day3input.txt";
 let fileStream = fs.createReadStream(inputFile);
 
+const alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const alphaArr = alpha.split('');
+let prioritySum = 0;
+
 fileStream.on('data', function(chunk) {
   const fileData = chunk.toString();
   const dataArr = fileData.split('\n');
 
   dataArr.forEach(function(row, index) {
-    //Do something with line of file data here...
+    const totalItems = row.length;
+    const compartmentItemsTotal = totalItems/2;
+  
+    const itemsCompartment1 = row.substring(0, compartmentItemsTotal);
+    const itemsCompartment1Arr = itemsCompartment1.split('');
+    const itemsCompartment2 = row.substring(compartmentItemsTotal);
+    const itemsCompartment2Arr = itemsCompartment2.split('');
+    
+    let compartmentIntersection = itemsCompartment1Arr.filter(function(x){
+      return itemsCompartment2Arr.includes(x);
+    })
+
+    prioritySum += (alphaArr.findIndex(letter => letter == compartmentIntersection[0]) + 1);
   });
 });
 
 fileStream.on('end', function() {
-  //Do something after all lines in file have been read...
+  console.log("Priority Sum: ", prioritySum);
 });
 
 fileStream.on('error', function(error) {
