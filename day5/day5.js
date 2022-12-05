@@ -68,12 +68,29 @@ fileStream.on('end', function() {
   console.log("Crates: ", crates);
 
   moves.forEach(function(move, index) {
+    // Part 1 Answer
+    // let i = 0;
+    // while(i < move.moveCrateTotal) {
+    //   let moveCrate = crates[move.moveFromCol-1].shift();
+    //   crates[move.moveToCol-1].unshift(moveCrate);
+    //   i++;
+    // }
+    // End Part 1
+
+    // Part 2 Answer
     let i = 0;
+    let tmpCrateStack = [];
     while(i < move.moveCrateTotal) {
       let moveCrate = crates[move.moveFromCol-1].shift();
-      crates[move.moveToCol-1].unshift(moveCrate);
+      tmpCrateStack.push(moveCrate)
       i++;
     }
+
+    while(tmpCrateStack.length > 0) {
+      crates[move.moveToCol-1].unshift(tmpCrateStack.pop());
+    }
+    //End Part 2
+
   });
 
   console.log("Moved crates: ", crates);
