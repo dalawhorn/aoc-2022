@@ -13,25 +13,53 @@ fileStream.on('data', function(chunk) {
     const characters = row.split('');
     
     let currentFour = [];
+    let currentFourteen = [];
     let lastCharIndex = 0;
+    let lastCharIndexFourteen = 0;
     let isUnique = false;
+    let isUniqueFourteen = false;
+
     for(let i=0; i < characters.length; i++) {
       if(currentFour.length < 4) {
         currentFour.push(characters[i]);
         lastCharIndex = i;
       }
+
+      if(currentFourteen.length < 14) {
+        currentFourteen.push(characters[i]);
+        lastCharIndexFourteen = i;
+      }
       
-      if(currentFour.length === 4) {
+      if(currentFour.length === 4 && !isUnique) {
         // Check for duplicate chars here...
         const unique = [...new Set(currentFour)];
         if(unique.length === 4) {
           // All characters are unique. We have a winner!
           isUnique = true;
-          break;
         }
 
         // If there are duplicate chars, remove first char on current arr so next char can be added.
-        currentFour.shift();
+        if(!isUnique) {
+          currentFour.shift();
+        }
+      }
+
+      if(currentFourteen.length === 14 && !isUniqueFourteen) {
+        // Check for duplicate chars here...
+        const uniqueFourteen = [...new Set(currentFourteen)];
+        if(uniqueFourteen.length === 14) {
+          // All characters are unique. We have a winner!
+          isUniqueFourteen = true;
+        }
+
+        // If there are duplicate chars, remove first char on current arr so next char can be added.
+        if(!isUniqueFourteen) {
+          currentFourteen.shift();
+        }
+      }
+
+      if(isUnique && isUniqueFourteen) {
+        break;
       }
     }
 
@@ -40,6 +68,13 @@ fileStream.on('data', function(chunk) {
     }
     else {
       console.log("No unique sequence was found");
+    }
+
+    if(isUniqueFourteen){
+      console.log("Last Char With Unique Prev 14: ", lastCharIndexFourteen+1);
+    }
+    else {
+      console.log("No unique sequence was found for prev 14.");
     }
   });
 });
