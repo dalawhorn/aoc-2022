@@ -8,6 +8,10 @@ let fileStream = fs.createReadStream(inputFile);
 // Array where each value is the current folder path so if we're in dir /a/b ["/","a","b"]
 let pwd = [];
 let part1Sum = 0;
+const fileSystemSpace = 70000000;
+const spaceNeeded = 30000000;
+let minSpaceNeeded = 0;
+let folderSizes = [];
 
 // Object representation of the file/folder structure in the input file.
 let fileTree = {
@@ -67,8 +71,35 @@ fileStream.on('end', function() {
   //Do stuff after file processed here...
   console.log(fileTree);
 
+  // Part 1
   calculatePart1DirSizeTotal('/', fileTree);
   console.log("Part 1 sum: ", part1Sum);
+
+  // Part 2
+  const currentUnusedSpace = fileSystemSpace - fileTree['/']['size'];
+  minSpaceNeeded = spaceNeeded - currentUnusedSpace;
+  console.log('Current unused space ', currentUnusedSpace);
+  console.log('Min space needed ', minSpaceNeeded);
+  console.log(folderSizes);
+  let folderSizesSort = folderSizes.sort(function(a, b) {
+    if(a < b) {
+      return -1;
+    }
+
+    if(a > b) {
+      return 1;
+    }
+
+    return 0;
+  });
+  console.log(folderSizesSort);
+  for(let i=0; i<folderSizesSort.length; i++) {
+    let size = folderSizesSort[i];
+    if(size >= minSpaceNeeded) {
+      console.log("Folder size to delete", folderSizesSort[i]);
+      break;
+    }
+  }
 });
 
 fileStream.on('error', function(error) {
@@ -121,6 +152,9 @@ function calculatePart1DirSizeTotal(folder, fileTree) {
   if(currentFolder['size'] <= 100000) {
     part1Sum += currentFolder['size'];
   }
+
+  //for part 2
+  folderSizes.push(currentFolder['size']);
 
   if(Object.keys(currentFolder['folders']).length > 0) {
     Object.keys(currentFolder['folders']).forEach(function(val, index) {
