@@ -2,11 +2,12 @@
 
 const fs = require('fs');
 
-const inputFile = "./day7/day7inputtest.txt";
+const inputFile = "./day7/day7input.txt";
 let fileStream = fs.createReadStream(inputFile);
 
 // Array where each value is the current folder path so if we're in dir /a/b ["/","a","b"]
 let pwd = [];
+let part1Sum = 0;
 
 // Object representation of the file/folder structure in the input file.
 let fileTree = {
@@ -66,9 +67,8 @@ fileStream.on('end', function() {
   //Do stuff after file processed here...
   console.log(fileTree);
 
-  // console.log(fileTree['/']['folders']['a']['files']);
-  // console.log(fileTree['/']['folders']['a']['folders']['e']);
-  // console.log(fileTree['/']['folders']['d']);
+  calculatePart1DirSizeTotal('/', fileTree);
+  console.log("Part 1 sum: ", part1Sum);
 });
 
 fileStream.on('error', function(error) {
@@ -114,4 +114,18 @@ function addFileToDir(pwd, fileTree, fileName, fileSize, pwdIndex = 0) {
     });
   }
 
+}
+
+function calculatePart1DirSizeTotal(folder, fileTree) {
+  let currentFolder = fileTree[folder];
+  if(currentFolder['size'] <= 100000) {
+    part1Sum += currentFolder['size'];
+  }
+
+  if(Object.keys(currentFolder['folders']).length > 0) {
+    Object.keys(currentFolder['folders']).forEach(function(val, index) {
+      let subFolder = currentFolder['folders'];
+      calculatePart1DirSizeTotal(val, subFolder);
+    });
+  }
 }
