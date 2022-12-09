@@ -33,10 +33,11 @@ fileStream.on('data', function(chunk) {
       let headMoveCoords = moveCoords(currentHeadPosition, headIncrementOrDecrement, headIncrementOrDecrementCoord);
       console.log(headMoveCoords);
 
+      let tailMove = getTailMove(currentHeadPosition, headMoveCoords, currentTailPosition, direction);
 
-
-      headPositions.push(currentHeadPosition);
-      tailPositions.push(currentTailPosition);
+      headPositions.push(headMoveCoords);
+      // tailPositions.push(tailMoveCoords);
+      console.log(headPositions);
     }
   });
 });
@@ -80,7 +81,10 @@ function incrementOrDecrementCoord(direction) {
 }
 
 function moveCoords(coordinates, incrementOrDecrement, incrementOrDecrementCoord) {
-  let newCoords = coordinates;
+  let newCoords = [];
+  newCoords.push(coordinates[0]);
+  newCoords.push(coordinates[1]);
+
   if(incrementOrDecrement == "increment") {
     newCoords[incrementOrDecrementCoord] = newCoords[incrementOrDecrementCoord] + 1;
   }
@@ -89,4 +93,8 @@ function moveCoords(coordinates, incrementOrDecrement, incrementOrDecrementCoord
   }
 
   return newCoords;
+}
+
+function getTailMove(prevHeadCoords, newHeadCoords, currentTailCoords, direction) {
+  console.log(newHeadCoords, currentTailCoords);
 }
