@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const inputFile = "./day10/day10inputtest.txt";
+const inputFile = "./day10/day10input.txt";
 let fileStream = fs.createReadStream(inputFile);
 
 let x = 1;
@@ -10,7 +10,7 @@ let totalCycles = 0;
 let signalAnalyze = 20;
 let signalAnalyzeIncrement = 40;
 let signalStrengthSum = 0;
-let spritePosition = 1;
+let spritePosition = 0;
 let drawRows = [];
 let currentDrawRow = "";
 
@@ -41,7 +41,7 @@ fileStream.on('end', function() {
   console.log('x: ', x);
   console.log('Signal strenght sum: ', signalStrengthSum);
 
-  console.log(currentDrawRow);
+  console.log(currentDrawRow.match(/\S{40}/g));
 });
 
 fileStream.on('error', function(error) {
@@ -57,8 +57,7 @@ function checkCycle() {
     signalAnalyze += signalAnalyzeIncrement;
   }
 
-  console.log(x, spritePosition);
-  console.log(currentDrawRow);
+  // console.log('x', x, 'sprite pos', spritePosition);
   if(spritePosition === x || spritePosition === (x - 1) || spritePosition === (x + 1)) {
     currentDrawRow += "#";
   }
@@ -67,8 +66,7 @@ function checkCycle() {
   }
 
   if(currentDrawRow.length % 40 === 0) {
-    console.log(currentDrawRow.length);
-    spritePosition = 1;
+    spritePosition = 0;
   }
   else {
     spritePosition ++;
