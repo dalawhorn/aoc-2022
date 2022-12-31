@@ -2,12 +2,14 @@
 
 const fs = require('fs');
 
-const inputFile = "./day11/day11input.txt";
+const inputFile = "./day11/day11inputtest.txt";
 let fileStream = fs.createReadStream(inputFile);
 
 let monkeys = [];
 let currentMonkeyIndex = 0;
-const numRounds = 20;
+// 20 rounds in part 1...
+// const numRounds = 20;
+const numRounds = 10000;
 
 fileStream.on('data', function(chunk) {
   const fileData = chunk.toString();
@@ -89,7 +91,9 @@ fileStream.on('end', function() {
         const newWorryLevelItem = calculateNewWorryLevel(item, currentMonkey['operation']);
         console.log('new worry level', newWorryLevelItem);
   
-        const worryCalc = Math.floor(newWorryLevelItem/3);
+        //Dividing by 3 is part 1 only...
+        // const worryCalc = Math.floor(newWorryLevelItem/3);
+        const worryCalc = newWorryLevelItem;
         console.log('bored worry level', worryCalc);
         
         let toMonkey = 0;
